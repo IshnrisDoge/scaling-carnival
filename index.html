@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bird Voices Database</title>
+</head>
+<body>
+    <h1>Bird Voices Database</h1>
+    <ul>
+        {% for bird_voice in bird_voices %}
+        <li>{{ bird_voice[1] }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('add_voice') }}">Add a New Bird Voice</a>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Bird Voice</title>
+</head>
+<body>
+    <h1>Add Bird Voice</h1>
+    <form action="{{ url_for('add_voice') }}" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        <label for="voice_url">Voice URL:</label>
+        <input type="text" id="voice_url" name="voice_url" required><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

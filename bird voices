@@ -1,0 +1,39 @@
+from flask import Flask, render_template, request, redirect, url_for
+import sqlite3
+
+app = Flask(__name__)
+
+# Set up SQLite database connection
+conn = sqlite3.connect("bird_voices.db")
+cursor = conn.cursor()
+
+# Define a route for the home page
+@app.route("/")
+def home():
+    # Fetch all bird voices from the database
+    cursor.execute("SELECT * FROM bird_voices")
+    bird_voices = cursor.fetchall()
+    return render_template("index.html", bird_voices=bird_voices)
+
+# Define a route to add a new bird voice
+@app.route("/add_voice", methods=["GET", "POST"])
+def add_voice():
+    if request.method == "POST":
+        # Get the form data
+        name = request.form["name"]
+        voice_url = request.form["voice_url"]
+
+        # Insert the new bird voice into the database
+        cursor.execute("INSERT INTO bird_voices (name, voice_url) VALUES (?, ?)", (name, voice_url))
+        conn.commit()
+
+        return redirect(url_for("home"))
+    return render_template("add_voice.html")
+
+if __name__ == "__main__":
+    # Create the 'bird_voices' table if it doesn't exist
+    cursor.execute("CREATE TABLE IF NOT EXISTS bird_voices (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, voice_url TEXT)")
+    conn.commit()
+
+    # Run the Flask web application
+    app.run(debug=True)
